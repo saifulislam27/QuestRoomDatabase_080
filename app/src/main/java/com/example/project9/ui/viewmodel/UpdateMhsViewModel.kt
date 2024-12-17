@@ -31,6 +31,27 @@ class UpdateMhsViewModel (
                 .toUIStateMhs()
         }
     }
+
+    fun updateState(mahasiswaEvent: MahasiswaEvent) {
+        updateUIState = updateUIState.copy(
+            mahasiswaEvent = mahasiswaEvent,
+        )
+    }
+
+    fun validateFields(): Boolean {
+        val event = updateUIState.mahasiswaEvent
+        val errorState = FormErrorState(
+            nim = if (event.nim.isNotEmpty()) null else "NIM Tidak Boleh Kosong",
+            nama = if (event.nama.isNotEmpty()) null else "Nama Tidak Boleh Kosong",
+            jenisKelamin = if (event.jenisKelamin.isNotEmpty()) null else "Jenis Kelamin Tidak Boleh Kosong",
+            alamat = if (event.alamat.isNotEmpty()) null else "Alamat Tidak Boleh Kosong",
+            kelas = if (event.kelas.isNotEmpty()) null else "Kelas Tidak Boleh Kosong",
+            angkatan = if (event.angkatan.isNotEmpty()) null else "Angkatan Tidak Boleh Kosong",
+        )
+
+        updateUIState = updateUIState.copy(isEntryValid = errorState)
+        return errorState.isValid()
+    }
 }
 fun Mahasiswa.toUIStateMhs(): MhsUIState = MhsUIState(
     mahasiswaEvent = this.toDetailUiEvent(),
