@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.project9.ui.view.mahasiswa.DestinasiInsert
+import com.example.project9.ui.view.mahasiswa.HomeMhsView
 import com.example.project9.ui.view.mahasiswa.InsertMhsView
 
 @Composable
@@ -15,16 +16,23 @@ fun PengelolaHalaman (
     navController: NavHostController = rememberNavController(),
     modifier: Modifier = Modifier
 ){
-    NavHost(
-        navController = navController,
-        startDestination = DestinasiInsert.route
-    ){
+    NavHost(navController = navController, startDestination = AlamatNavigasi.DestinasiHome.route) {
         composable(
-            route = DestinasiInsert.route
-        ){
-            InsertMhsView(
-                onBack = {}, onNavigate = {}
+            route = AlamatNavigasi.DestinasiHome.route
+        ) {
+            HomeMhsView(
+                onDetailClick = { nim ->
+                    navController.navigate("${AlamatNavigasi.DestinasiDetail.route}/$nim")
+                    println(
+                        "PengelolaHalaman: nim = $nim"
+                    )
+                },
+                onAddMhs = {
+                    navController.navigate(DestinasiInsert.route)
+                },
+                modifier = modifier
             )
         }
+
     }
 }
